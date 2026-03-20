@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Centre Aliment Application</title>
+    <title>Hema Application</title>
 
     <style>
         body {
@@ -19,10 +19,17 @@
             text-align: center;
         }
 
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
         input, select, textarea {
             width: 100%;
             padding: 8px;
-            margin: 8px 0;
+            margin: 5px 0;
         }
 
         button {
@@ -45,15 +52,24 @@
 
 <!-- FORM PAGE -->
 <div class="container" id="formPage">
-    <h2>Centre Aliment</h2>
+    <h2>Hema Application</h2>
 
-    <input type="text" id="name" placeholder="Name" required>
+    <label>Name</label>
+    <input type="text" id="name" placeholder="Enter your name" required>
+
+    <label>Date of Birth</label>
     <input type="date" id="dob" required>
-    <input type="text" id="school" placeholder="School Name" required>
-    <input type="number" id="year" placeholder="Completion Year" required>
-    <input type="text" id="college" placeholder="College Name">
 
-    <!-- DEGREE -->
+    <label>School Name</label>
+    <input type="text" id="school" placeholder="Enter school name" required>
+
+    <label>Completion Year</label>
+    <input type="number" id="year" placeholder="Enter year" required>
+
+    <label>College Name</label>
+    <input type="text" id="college" placeholder="Enter college name">
+
+    <label>Degree</label>
     <select id="degree" onchange="checkOther()">
         <option>Diploma</option>
         <option>BSc</option>
@@ -62,12 +78,12 @@
         <option>Other</option>
     </select>
 
-    <!-- OTHER DEGREE -->
     <input type="text" id="otherDegree" placeholder="Enter your degree" style="display:none;">
 
-    <textarea id="address" placeholder="Address"></textarea>
+    <label>Address</label>
+    <textarea id="address" placeholder="Enter address"></textarea>
 
-    <!-- STATE -->
+    <label>State</label>
     <select id="state">
         <option value="">Select State</option>
         <option>Tamil Nadu</option>
@@ -104,7 +120,9 @@ let formData = "";
 
 // SHOW OTHER DEGREE
 function checkOther() {
-    if (degree.value === "Other") {
+    let degree = document.getElementById("degree").value;
+
+    if (degree === "Other") {
         document.getElementById("otherDegree").style.display = "block";
     } else {
         document.getElementById("otherDegree").style.display = "none";
@@ -113,30 +131,37 @@ function checkOther() {
 
 // SUBMIT
 function submitForm() {
-    let selectedDegree = degree.value;
 
-    if (selectedDegree === "Other") {
-        selectedDegree = document.getElementById("otherDegree").value;
-    }
+    let name = document.getElementById("name").value;
+    let dob = document.getElementById("dob").value;
+    let school = document.getElementById("school").value;
+    let year = document.getElementById("year").value;
+    let college = document.getElementById("college").value;
+    let degree = document.getElementById("degree").value;
+    let otherDegree = document.getElementById("otherDegree").value;
+    let address = document.getElementById("address").value;
+    let state = document.getElementById("state").value;
+
+    let selectedDegree = degree === "Other" ? otherDegree : degree;
 
     formData = `
 Centre Aliment Application
 
-Name: ${name.value}
-DOB: ${dob.value}
-School: ${school.value}
-Year: ${year.value}
-College: ${college.value}
+Name: ${name}
+Date of Birth: ${dob}
+School: ${school}
+Year: ${year}
+College: ${college}
 Degree: ${selectedDegree}
-Address: ${address.value}
-State: ${state.value}
+Address: ${address}
+State: ${state}
     `;
 
     document.getElementById("formPage").style.display = "none";
     document.getElementById("successPage").style.display = "block";
 }
 
-// DOWNLOAD (NO ERROR)
+// DOWNLOAD FILE
 function downloadFile() {
     let blob = new Blob([formData], { type: "text/plain" });
     let url = URL.createObjectURL(blob);
