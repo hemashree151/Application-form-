@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Centre Aliment Application</title>
+
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #successPage {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- FORM PAGE -->
+<div class="container" id="formPage">
+    <h2>Centre Aliment</h2>
+
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="date" id="dob" required>
+    <input type="text" id="school" placeholder="School Name" required>
+    <input type="number" id="year" placeholder="Completion Year" required>
+    <input type="text" id="college" placeholder="College Name">
+
+    <!-- DEGREE -->
+    <select id="degree" onchange="checkOther()">
+        <option>Diploma</option>
+        <option>BSc</option>
+        <option>B Tech</option>
+        <option>B Engg</option>
+        <option>Other</option>
+    </select>
+
+    <!-- OTHER DEGREE -->
+    <input type="text" id="otherDegree" placeholder="Enter your degree" style="display:none;">
+
+    <textarea id="address" placeholder="Address"></textarea>
+
+    <!-- STATE -->
+    <select id="state">
+        <option value="">Select State</option>
+        <option>Tamil Nadu</option>
+        <option>Kerala</option>
+        <option>Karnataka</option>
+        <option>Andhra Pradesh</option>
+        <option>Telangana</option>
+        <option>Maharashtra</option>
+        <option>Delhi</option>
+        <option>Uttar Pradesh</option>
+        <option>Gujarat</option>
+        <option>Rajasthan</option>
+        <option>West Bengal</option>
+        <option>Punjab</option>
+        <option>Haryana</option>
+        <option>Odisha</option>
+        <option>Bihar</option>
+        <option>Madhya Pradesh</option>
+    </select>
+
+    <button onclick="submitForm()">Submit</button>
+</div>
+
+<!-- SUCCESS PAGE -->
+<div class="container" id="successPage">
+    <h2>✅ Application Submitted Successfully</h2>
+
+    <button onclick="downloadFile()">Download</button>
+    <button onclick="exitPage()">Exit</button>
+</div>
+
+<script>
+let formData = "";
+
+// SHOW OTHER DEGREE
+function checkOther() {
+    if (degree.value === "Other") {
+        document.getElementById("otherDegree").style.display = "block";
+    } else {
+        document.getElementById("otherDegree").style.display = "none";
+    }
+}
+
+// SUBMIT
+function submitForm() {
+    let selectedDegree = degree.value;
+
+    if (selectedDegree === "Other") {
+        selectedDegree = document.getElementById("otherDegree").value;
+    }
+
+    formData = `
+Centre Aliment Application
+
+Name: ${name.value}
+DOB: ${dob.value}
+School: ${school.value}
+Year: ${year.value}
+College: ${college.value}
+Degree: ${selectedDegree}
+Address: ${address.value}
+State: ${state.value}
+    `;
+
+    document.getElementById("formPage").style.display = "none";
+    document.getElementById("successPage").style.display = "block";
+}
+
+// DOWNLOAD (NO ERROR)
+function downloadFile() {
+    let blob = new Blob([formData], { type: "text/plain" });
+    let url = URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "Application.txt";
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+// EXIT
+function exitPage() {
+    location.reload();
+}
+</script>
+
+</body>
+</html>
